@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ const App = () => {
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/items");
+      const response = await axios.get("http://13.201.194.168:3001/items");
       setItems(response.data);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -28,10 +29,10 @@ const App = () => {
     e.preventDefault();
     try {
       if (editingId) {
-        await axios.put(`http://localhost:3001/item/${editingId}`, form);
+        await axios.put(`http://13.201.194.168:3001/item/${editingId}`, form);
         setEditingId(null);
       } else {
-        await axios.post("http://localhost:3001/items", form);
+        await axios.post("http://13.201.194.168:3001/items", form);
       }
       setForm({ name: "", description: "", price: "" });
       fetchItems();
@@ -47,7 +48,7 @@ const App = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3001/item/${id}`);
+      await axios.delete(`http://13.201.194.168:3001/item/${id}`);
       fetchItems();
     } catch (error) {
       console.error("Error deleting item:", error);
