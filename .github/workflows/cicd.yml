@@ -1,0 +1,31 @@
+name: deploy node application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source
+        uses: actions/checkout@v4
+      - name: login to docker hub
+        run: docker login -u kush123tomar123 -p ncs2015##
+      - name: build docker image
+        run: docker build -t kush123tomar123/reactjs .
+      - name: publish image to docker hub
+        run: docker push kush123tomar123/reactjs:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Stop and remove existing container if exists
+        run: |
+          docker ps -q -f name=reactjs-app-container | grep -q . && docker rm -f reactjs-app-container || echo "No existing container to remove"
+      - name: pull image from docker hub
+        run: docker pull kush123tomar123/reactjs:latest
+      - name: run docker container
+        run: docker run -d -p 3000:80 --name reactjs-app-container kush123tomar123/reactjs 
