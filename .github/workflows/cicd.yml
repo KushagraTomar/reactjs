@@ -23,7 +23,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Stop and remove existing container if exists
-        run: docker rm reactjs-app-container
+        run: |
+          docker ps -q --filter "name=reactjs-app-container" | grep -q . && docker rm -f reactjs-app-container || echo "No container to remove"
       - name: pull image from docker hub
         run: docker pull kush123tomar123/reactjs:latest
       - name: run docker container
